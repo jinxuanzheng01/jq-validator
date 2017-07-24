@@ -1,0 +1,27 @@
+
+#register-form{
+    width: 500px;
+    margin: 0 auto;
+    margin-top: 200px;
+}
+#register-form::after{
+    content: '';
+    display: block;
+    clear: both;
+}
+#register-form label{
+    display: inline-block;
+    width: 15%;
+    text-align: right;
+}
+#register-form input{
+    display: inline-block;
+    width: 84%;
+}
+#register-form .text-danger{
+    margin: 10px 0 5px 80px;
+}
+
+#register-form button[type=submit]{
+    float: right;
+}

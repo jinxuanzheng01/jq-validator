@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>注册demo</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="./register.css">
+</head>
+<body>
+<form id="register-form">
+    <div class="form-group">
+        <label for="userName">账号：</label>
+        <input type="text" class="form-control" id="userName" placeholder="请输入账号" name="userName"
+        data-jv-required="true" data-jv-required-msg="账号不能为空"
+        data-jv-nosymbol="true" data-jv-nosymbol-msg="账号只能用数字字母下划线组成"
+        data-jv-min-length="9" data-jv-min-length-msg="账号长度不得小于9位"
+        data-jv-max-length="15" data-jv-max-length-msg="账号长度不得大于15位"
+        >
+    </div>
+    <div class="form-group">
+        <label for="password">密码：</label>
+        <input type="password" class="form-control" id="password" placeholder="请输入密码" name="password"
+        data-jv-required="true" data-jv-required-msg="密码不能为空"
+        data-jv-nosymbol="true" data-jv-nosymbol-msg="密码只能由数字字母下划线组成"
+        data-jv-min-length="6" data-jv-min-length-msg="密码长度不得小于6位"
+        data-jv-max-length="15" data-jv-max-length-msg="账号长度不得大于12位"
+        >
+    </div>
+    <div class="form-group">
+        <label for="passwordAgain">确认密码：</label>
+        <input type="password" class="form-control" id="passwordAgain" placeholder="请再次输入密码"
+        data-jv-required="true" data-jv-required-msg="确认密码不能为空"
+        data-jv-check-val="#password" data-jv-check-val-msg="两次密码输入不一致"
+        >
+    </div>
+    <div class="form-group">
+        <label for="vfCode">验证码：</label>
+        <input type="text" class="form-control" id="vfCode" placeholder="请输入验证码" name="vfCode"
+        data-jv-required="true"  data-jv-required-msg="验证码不能为空"
+        >
+    </div>
+    <div class="form-group">
+        <label for="vfCode">验证码：</label>
+        <input type="text" class="form-control" id="idcard" placeholder="请输入验证码" name="vfCode"
+               data-jv-idcard="true"  data-jv-idcard-msg="身份验证能为空"
+        >
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+
+<script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="./validator-1.0.1.js"></script>
+<script>
+    $('#register-form').jxzValidator.extendRules({
+        "idcard":function(){
+            return new RegExp(/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/).text(this.val);
+        }
+    });
+
+    $('#register-form').jxzValidator({
+        plugName:'jv',                          // 自定义属性名  默认为:'jv'
+        validEvent: 'blur',                     // 激活验证方式  默认为'input'
+        isAllRules: false,                      // 是否显示全部验证结果，默认是false，即显示单条
+        success: function ( res ) {             // 表单验证成功
+            /* res.resultArr {Array} 判断结果，例如[true,false,false,true]
+            *  res.$this {Object} 指向为当前form表单
+            * */
+            var sendStr = res.$this.serialize();
+            $.ajax( {
+                method: 'POST',
+                url: '/formSubmit',
+                data: sendStr,
+                success: function () {
+                    alert( '注册成功，正在刷新页面');
+                    window.location.reload();
+                }
+            } );
+        },
+        error: function (res) {                 // 表单验证失败
+            console.log(res)
+        }
+    });
+
+</script>
+</body>
+</html>
